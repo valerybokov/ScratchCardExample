@@ -20,5 +20,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "ScratchCardExample"
-include(":app")
- 
+include(":app", ":feature:startscreen")

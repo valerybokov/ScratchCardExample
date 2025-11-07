@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="scratchcard_state_title">Your scratchcard is</string>
+    <string name="go_to_scratchscreen">Scratch screen</string>
+    <string name="go_to_activationscreen">Activation screen</string>
+    <string name="card_scratched">Scratched</string>
+    <string name="card_activated">Activated</string>
+    <string name="card_not_scratched">Not scratched</string>
+</resources>
