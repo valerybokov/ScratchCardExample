@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activate">Activate</string>
+    <string name="title_activation">Activation</string>
+    <string name="activation_error">Can not activate the card</string>
+</resources>

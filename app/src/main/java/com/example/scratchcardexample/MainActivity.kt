@@ -22,6 +22,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.scratchcardexample.feature.activation.ActivationScreen
 import com.example.scratchcardexample.feature.startscreen.StartScreen
 import com.example.scratchcardexample.ui.theme.ScratchCardExampleTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,12 +41,21 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AppNavHost() {
+private fun AppNavHost(
+    viewModel: MainActivityViewModel = hiltViewModel()
+) {
     val navController = rememberNavController()
 
     ScratchCardExampleTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
+            topBar = {
+                AppBar(
+                    titleId = viewModel.header,
+                    onBack = navController::navigateUp,
+                    showBackButton = viewModel.showBackButton
+                )
+            },
             ) { innerPadding ->
             NavHost(
                 navController = navController,
@@ -54,6 +64,9 @@ private fun AppNavHost() {
             ) {
                 composable(ROUTE_START) {
                     StartScreen(
+                        onStart = {
+                            viewModel.updateHeader(ROUTE_START)
+                        },
                         innerPadding = innerPadding,
                         onNavigateToScratchScreen = {
                             navController.navigate(ROUTE_SCRATCH)
@@ -61,6 +74,14 @@ private fun AppNavHost() {
                         onNavigateToActivationScreen = {
                             navController.navigate(ROUTE_ACTIVATION)
                         }
+                    )
+                }
+                composable(ROUTE_ACTIVATION) {
+                    ActivationScreen(
+                        onStart = {
+                            viewModel.updateHeader(ROUTE_ACTIVATION)
+                        },
+                        innerPadding = innerPadding,
                     )
                 }
             }

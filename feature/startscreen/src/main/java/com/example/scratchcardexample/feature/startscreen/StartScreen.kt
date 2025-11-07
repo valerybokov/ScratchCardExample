@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,12 +21,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun StartScreen(
+    onStart: () -> Unit,
     innerPadding: PaddingValues,
     onNavigateToScratchScreen: () -> Unit,
     onNavigateToActivationScreen: () -> Unit,
 ) {
     val viewModel: StartScreenViewModel = hiltViewModel()
     val scratchcardStateId by viewModel.scratchcardStateId.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        onStart()
+    }
 
     StartScreenView(
         Modifier.padding(innerPadding).fillMaxSize(),
@@ -69,8 +75,9 @@ private fun StartScreenView(
 @Composable
 private fun StartScreenPreview() {
     StartScreenView(
-        Modifier.fillMaxSize(),
-        {}, {},
-        R.string.card_scratched
+        modifier = Modifier.fillMaxSize(),
+        onNavigateToScratchScreen = {},
+        onNavigateToActivationScreen = {},
+        scratchcardStateId = R.string.card_scratched
     )
 }
