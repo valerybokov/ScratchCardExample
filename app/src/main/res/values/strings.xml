@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Scratchcard Example App</string>
+    <string name="back">back to start screen</string>
 </resources>
