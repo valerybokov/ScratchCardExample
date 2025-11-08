@@ -3,11 +3,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.example.scratchcardexample.feature.startscreen"
+    namespace = "com.example.scratchcardexample.feature.scratchscreen"
     compileSdk = 36
 
     defaultConfig {
@@ -33,14 +32,9 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
-    implementation(project(":core:domain"))
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
@@ -58,7 +52,6 @@ dependencies {
 
     // Compose integration for hiltViewModel()
     implementation(libs.androidx.hilt.navigation.compose)
-    kapt(libs.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

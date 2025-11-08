@@ -23,5 +23,6 @@ rootProject.name = "ScratchCardExample"
 include(
     ":app",
     ":feature:startscreen",
-    ":feature:activationscreen"
+    ":feature:activationscreen",
+    ":feature:scratchscreen",
 )

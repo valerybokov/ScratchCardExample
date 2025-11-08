@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.scratchcardexample.feature.activation.ActivationScreen
+import com.example.scratchcardexample.feature.scratchscreen.ScratchScreen
 import com.example.scratchcardexample.feature.startscreen.StartScreen
 import com.example.scratchcardexample.ui.theme.ScratchCardExampleTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,7 +82,14 @@ private fun AppNavHost(
                         onStart = {
                             viewModel.updateHeader(ROUTE_ACTIVATION)
                         },
-                        innerPadding = innerPadding,
+                        //innerPadding = innerPadding,
+                    )
+                }
+                composable(ROUTE_SCRATCH) {
+                    ScratchScreen(
+                        onStart = {
+                            viewModel.updateHeader(ROUTE_SCRATCH)
+                        },
                     )
                 }
             }

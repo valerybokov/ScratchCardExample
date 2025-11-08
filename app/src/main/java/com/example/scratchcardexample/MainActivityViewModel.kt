@@ -20,6 +20,7 @@ class MainActivityViewModel @Inject constructor(): ViewModel() {
     fun updateHeader(route: String) {
         val value = when(route) {
             ROUTE_ACTIVATION -> com.example.scratchcardexample.feature.activation.R.string.title_activation
+            ROUTE_SCRATCH -> com.example.scratchcardexample.feature.scratchscreen.R.string.scratch
             else -> R.string.app_name
         }
         if (_header.value != value)

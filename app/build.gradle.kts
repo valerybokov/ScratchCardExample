@@ -44,6 +44,7 @@ android {
 dependencies {
     implementation(project(":feature:startscreen"))
     implementation(project(":feature:activationscreen"))
+    implementation(project(":feature:scratchscreen"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
