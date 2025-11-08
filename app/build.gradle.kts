@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.scratchcardexample"
+    namespace = "com.scratchcardexample"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.scratchcardexample"
+        applicationId = "com.scratchcardexample"
         minSdk = 29
         targetSdk = 36
         versionCode = 1

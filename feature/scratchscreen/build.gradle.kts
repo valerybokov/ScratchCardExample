@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.scratchcardexample.feature.scratchscreen"
+    namespace = "com.scratchcardexample.feature.scratchscreen"
     compileSdk = 36
 
     defaultConfig {
