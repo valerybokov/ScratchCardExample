@@ -9,8 +9,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -55,13 +56,15 @@ private fun StartScreenView(
 
         Text(
             text = stringResource(scratchcardStateId),
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier.padding(top = 16.dp, bottom = 32.dp)
         )
 
         Button(onClick = onNavigateToScratchScreen,
-            modifier = Modifier.padding(vertical = 16.dp).fillMaxWidth(0.5f)) {
+            modifier = Modifier.fillMaxWidth(0.5f)) {
             Text(text = stringResource(R.string.go_to_scratchscreen))
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(onNavigateToActivationScreen,
             modifier = Modifier.fillMaxWidth(0.5f)) {
