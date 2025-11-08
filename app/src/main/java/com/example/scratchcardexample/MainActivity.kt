@@ -68,7 +68,6 @@ private fun AppNavHost(
                         onStart = {
                             viewModel.updateHeader(ROUTE_START)
                         },
-                        innerPadding = innerPadding,
                         onNavigateToScratchScreen = {
                             navController.navigate(ROUTE_SCRATCH)
                         },
@@ -82,7 +81,6 @@ private fun AppNavHost(
                         onStart = {
                             viewModel.updateHeader(ROUTE_ACTIVATION)
                         },
-                        //innerPadding = innerPadding,
                     )
                 }
                 composable(ROUTE_SCRATCH) {

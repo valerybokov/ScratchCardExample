@@ -1,9 +1,7 @@
 package com.example.scratchcardexample.feature.activation
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -19,7 +17,6 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ActivationScreen(
     onStart: () -> Unit,
-    innerPadding: PaddingValues,
 ) {
     val viewModel: ActivationScreenViewModel = hiltViewModel()
 
@@ -27,7 +24,7 @@ fun ActivationScreen(
         onStart()
     }
     ActivationScreenView(
-        Modifier.padding(innerPadding).fillMaxSize(),
+        Modifier.fillMaxSize(),
         viewModel::activate
     )
 }

@@ -22,7 +22,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun StartScreen(
     onStart: () -> Unit,
-    innerPadding: PaddingValues,
     onNavigateToScratchScreen: () -> Unit,
     onNavigateToActivationScreen: () -> Unit,
 ) {
@@ -34,7 +33,7 @@ fun StartScreen(
     }
 
     StartScreenView(
-        Modifier.padding(innerPadding).fillMaxSize(),
+        Modifier.fillMaxSize(),
         onNavigateToScratchScreen,
         onNavigateToActivationScreen,
         scratchcardStateId
