@@ -26,4 +26,5 @@ include(
     ":feature:activationscreen",
     ":feature:scratchscreen",
     ":core:data",
+    ":core:network",
 )
