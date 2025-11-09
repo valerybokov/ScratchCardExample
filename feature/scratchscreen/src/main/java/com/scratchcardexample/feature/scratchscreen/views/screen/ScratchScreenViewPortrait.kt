@@ -1,4 +1,4 @@
-package com.scratchcardexample.feature.scratchscreen
+package com.scratchcardexample.feature.scratchscreen.views.screen
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -13,9 +13,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
-import com.scratchcardexample.feature.scratchscreen.scratchcard.ScratchCard
-import com.scratchcardexample.feature.scratchscreen.scratchcard.model.DraggedPath
+import com.scratchcardexample.feature.scratchscreen.views.scratchcard.ScratchCard
+import com.scratchcardexample.feature.scratchscreen.views.scratchcard.model.DraggedPath
 import androidx.compose.runtime.State
+import com.scratchcardexample.feature.scratchscreen.views.scratchcard.model.ScratchCoverageTracker
 
 @Composable
 internal fun ScratchScreenViewPortrait(
@@ -25,24 +26,27 @@ internal fun ScratchScreenViewPortrait(
     overlayImage: ImageBitmap,
     baseImage: ImageBitmap,
     onScratchClick: () -> Unit,
-    isCardScratched: Boolean
+    isCardScratched: Boolean,
+    tracker: ScratchCoverageTracker,
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        ScratchCard(
-            modifier = Modifier
-                .border(width = 2.dp, color = Color.Gray, shape = RoundedCornerShape(8.dp))
-                .padding(8.dp),
-            widthHeight = 300.dp,
-            draggedPath = draggedPath,
-            movedOffset = movedOffset,
-            overlayImage = overlayImage,
-            baseImage = baseImage,
-            isCardScratched = isCardScratched,
-        )
+            ScratchCard(
+                modifier = Modifier
+                    .border(width = 2.dp, color = Color.Gray, shape = RoundedCornerShape(8.dp))
+                    .padding(8.dp),
+                widthHeight = 300.dp,
+                draggedPath = draggedPath,
+                movedOffset = movedOffset,
+                overlayImage = overlayImage,
+                baseImage = baseImage,
+                isCardScratched = isCardScratched,
+                tracker = tracker,
+            )
+
 
         StartScratchButton(onScratchClick)
     }

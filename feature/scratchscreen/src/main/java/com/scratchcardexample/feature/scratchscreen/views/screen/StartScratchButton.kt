@@ -1,4 +1,4 @@
-package com.scratchcardexample.feature.scratchscreen
+package com.scratchcardexample.feature.scratchscreen.views.screen
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
@@ -9,6 +9,7 @@ import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.scratchcardexample.feature.scratchscreen.R
 
 @NonRestartableComposable
 @Composable

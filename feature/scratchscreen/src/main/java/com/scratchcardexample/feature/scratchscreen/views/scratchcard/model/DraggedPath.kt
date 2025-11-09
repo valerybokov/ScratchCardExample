@@ -1,4 +1,4 @@
-package com.scratchcardexample.feature.scratchscreen.scratchcard.model
+package com.scratchcardexample.feature.scratchscreen.views.scratchcard.model
 
 import androidx.compose.ui.graphics.Path
 

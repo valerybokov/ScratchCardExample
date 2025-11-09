@@ -10,6 +10,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 
 @HiltViewModel
-internal class StartScreenViewModel @Inject constructor(): ViewModel() {
+class StartScreenViewModel @Inject constructor(): ViewModel() {
     val scratchcardStateId: StateFlow<Int> = flow<Int>{ R.string.card_activated }.stateIn(viewModelScope, SharingStarted.Lazily, R.string.card_not_scratched)
 }

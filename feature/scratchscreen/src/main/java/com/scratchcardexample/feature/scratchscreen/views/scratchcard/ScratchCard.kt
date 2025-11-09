@@ -1,4 +1,4 @@
-package com.scratchcardexample.feature.scratchscreen.scratchcard
+package com.scratchcardexample.feature.scratchscreen.views.scratchcard
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -23,11 +23,12 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.scratchcardexample.feature.scratchscreen.scratchcard.model.DraggedPath
+import com.scratchcardexample.feature.scratchscreen.views.scratchcard.model.DraggedPath
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.Dp
 import com.scratchcardexample.feature.scratchscreen.R
 import androidx.compose.runtime.State
+import com.scratchcardexample.feature.scratchscreen.views.scratchcard.model.ScratchCoverageTracker
 
 @Composable
 internal fun ScratchCard(
@@ -37,6 +38,7 @@ internal fun ScratchCard(
     baseImage: ImageBitmap,
     draggedPath: State<DraggedPath>,
     movedOffset: MutableState<Offset>,
+    tracker: ScratchCoverageTracker,
     isCardScratched: Boolean = false,
 ) {
      Canvas(
@@ -45,6 +47,7 @@ internal fun ScratchCard(
              .pointerInput(true) {
                  detectDragGestures { change, _ ->
                      movedOffset.value = change.position
+                     tracker.registerTouch(change.position, size)
                  }
              },
      ) {
@@ -54,7 +57,7 @@ internal fun ScratchCard(
              height = imageWidth
          )
 
-         drawImage(overlayImage, dstSize = imageSize)
+         drawImage(image = overlayImage, dstSize = imageSize)
 
          val clipOp: ClipOp
          if (isCardScratched) {
@@ -80,6 +83,7 @@ private fun ScratchCardPreview() {
     val base = ImageBitmap.imageResource(R.drawable.base)
     val currentPathState = remember { mutableStateOf(DraggedPath(path = Path())) }
     val movedOffsetState = remember { mutableStateOf(Offset.Unspecified) }
+    val listener = ScratchCoverageTracker.OnScratchedListener { /* no-op */ }
 
     ScratchCard(
         widthHeight = 300.dp,
@@ -87,6 +91,8 @@ private fun ScratchCardPreview() {
         draggedPath = currentPathState,
         movedOffset = movedOffsetState,
         baseImage = base,
+        tracker = ScratchCoverageTracker(
+            brushRadius = 50f, onScratchedListener = listener),
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
