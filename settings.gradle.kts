@@ -27,4 +27,5 @@ include(
     ":feature:scratchscreen",
     ":core:data",
     ":core:network",
+    ":core:domain",
 )
