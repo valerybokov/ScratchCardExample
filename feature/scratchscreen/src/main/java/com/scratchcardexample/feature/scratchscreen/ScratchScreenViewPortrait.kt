@@ -6,30 +6,42 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
-import com.scratchcardexample.feature.scratchscreen.scratchcard.ImageScratch
+import com.scratchcardexample.feature.scratchscreen.scratchcard.ScratchCard
+import com.scratchcardexample.feature.scratchscreen.scratchcard.model.DraggedPath
+import androidx.compose.runtime.State
 
 @Composable
 internal fun ScratchScreenViewPortrait(
     modifier: Modifier,
-    onScratchClick: () -> Unit) {
+    draggedPath: State<DraggedPath>,
+    movedOffset: MutableState<Offset>,
+    overlayImage: ImageBitmap,
+    baseImage: ImageBitmap,
+    onScratchClick: () -> Unit,
+    isCardScratched: Boolean
+) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        ImageScratch(
-            widthHeight = 300.dp,
-            overlayImage = ImageBitmap.imageResource(R.drawable.overlay),
-            baseImage = ImageBitmap.imageResource(R.drawable.base),
+        ScratchCard(
             modifier = Modifier
                 .border(width = 2.dp, color = Color.Gray, shape = RoundedCornerShape(8.dp))
                 .padding(8.dp),
+            widthHeight = 300.dp,
+            draggedPath = draggedPath,
+            movedOffset = movedOffset,
+            overlayImage = overlayImage,
+            baseImage = baseImage,
+            isCardScratched = isCardScratched,
         )
 
         StartScratchButton(onScratchClick)
