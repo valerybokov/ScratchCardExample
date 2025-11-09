@@ -25,4 +25,5 @@ include(
     ":feature:startscreen",
     ":feature:activationscreen",
     ":feature:scratchscreen",
+    ":core:data",
 )
