@@ -1,4 +1,4 @@
-package com.scratchcardexample.core.data.repository.interfaces
+package com.scratchcardexample.core.domain.repository
 
 import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.flow.Flow
