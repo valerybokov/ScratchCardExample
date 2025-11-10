@@ -34,20 +34,21 @@ internal fun ScratchScreenViewPortrait(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-            ScratchCard(
-                modifier = Modifier
-                    .border(width = 2.dp, color = Color.Gray, shape = RoundedCornerShape(8.dp))
-                    .padding(8.dp),
-                widthHeight = 300.dp,
-                draggedPath = draggedPath,
-                movedOffset = movedOffset,
-                overlayImage = overlayImage,
-                baseImage = baseImage,
-                isCardScratched = isCardScratched,
-                tracker = tracker,
-            )
+        val borderColor = if (isCardScratched) Color.Green else Color.Gray
+        ScratchCard(
+            modifier = Modifier
+                .border(width = 2.dp, color = borderColor, shape = RoundedCornerShape(8.dp))
+                .padding(8.dp),
+            widthHeight = 300.dp,
+            draggedPath = draggedPath,
+            movedOffset = movedOffset,
+            overlayImage = overlayImage,
+            baseImage = baseImage,
+            isCardScratched = isCardScratched,
+            tracker = tracker,
+        )
 
-
-        StartScratchButton(onScratchClick)
+        if (!isCardScratched)
+            StartScratchButton(onScratchClick)
     }
 }

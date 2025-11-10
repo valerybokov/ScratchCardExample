@@ -33,9 +33,10 @@ internal fun ScratchScreenViewLandscape(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically) {
+        val borderColor = if (isCardScratched) Color.Green else Color.Gray
         ScratchCard(
             modifier = Modifier
-                .border(width = 2.dp, color = Color.Gray, shape = RoundedCornerShape(8.dp))
+                .border(width = 2.dp, color = borderColor, shape = RoundedCornerShape(8.dp))
                 .padding(8.dp),
             widthHeight = 240.dp,
             overlayImage = overlayImage,
@@ -46,6 +47,7 @@ internal fun ScratchScreenViewLandscape(
             isCardScratched = isCardScratched,
         )
 
-        StartScratchButton(onScratchClick)
+        if (!isCardScratched)
+            StartScratchButton(onScratchClick)
     }
 }

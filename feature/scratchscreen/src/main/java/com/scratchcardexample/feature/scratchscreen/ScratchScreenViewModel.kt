@@ -14,11 +14,16 @@ import com.scratchcardexample.feature.scratchscreen.views.scratchcard.model.Drag
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.scratchcardexample.core.data.repository.interfaces.ScratchCodeRepository
+import com.scratchcardexample.core.domain.repository.ScratchCodeRepository
 import com.scratchcardexample.core.domain.usecases.GenerateCodeUseCase
 import com.scratchcardexample.feature.scratchscreen.views.scratchcard.model.ScratchCoverageTracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 
 @HiltViewModel
 class ScratchScreenViewModel @Inject constructor(
@@ -46,10 +51,20 @@ class ScratchScreenViewModel @Inject constructor(
     }
     internal val tracker = ScratchCoverageTracker(brushRadius = 50f, onScratchedListener = listener)
 
-    private val _scratchCardState: MutableState<ScratchCardState> =
-        mutableStateOf(ScratchCardState.NotScratched)
+    private val _scratchCardState = MutableStateFlow(ScratchCardState.Initialising)
 
-    internal val scratchCardState: State<ScratchCardState> = _scratchCardState
+    val scratchCardState: StateFlow<ScratchCardState> = combine(repo.isCardActivated(), _scratchCardState) { isCardActivated, scratchCardState ->
+        val state: ScratchCardState
+        if (scratchCardState == ScratchCardState.Initialising) {
+            state = if (isCardActivated) ScratchCardState.Scratched else ScratchCardState.NotScratched
+            _scratchCardState.value = state
+        }
+        else
+            state = scratchCardState
+
+        state
+    }
+    .stateIn(viewModelScope, SharingStarted.Lazily, ScratchCardState.Scratching)
 
     fun initialize(res: Resources) {
         if (_scratchOverlayImage.value == null) {
@@ -90,7 +105,8 @@ class ScratchScreenViewModel @Inject constructor(
     }
 }
 
-internal enum class ScratchCardState {
+enum class ScratchCardState {
+    Initialising,
     NotScratched,
     Scratching,
     Scratched,

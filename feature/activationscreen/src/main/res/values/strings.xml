@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="activate">Activate</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="success_args">Success (%s)</string>
+    <string name="ok">OK</string>
     <string name="title_activation">Activation</string>
     <string name="activation_error">Can not activate the card</string>
+    <string name="error_no_code">There is no code to activate</string>
+    <string name="error_api">Something vent wrong</string>
+    <string name="error_no_internet">No Internet</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_number_is_small">Received number is too small</string>
+    <string name="error_number_has_invalid_format">Received number has invalid format</string>
 </resources>

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -32,9 +33,16 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
+    implementation(project(":core:data"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:network"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
@@ -49,6 +57,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     // Compose integration for hiltViewModel()
     implementation(libs.androidx.hilt.navigation.compose)

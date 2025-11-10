@@ -22,6 +22,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.scratchcardexample.feature.scratchscreen.views.scratchcard.model.DraggedPath
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.scratchcardexample.feature.scratchscreen.views.screen.LoadingAnimation
 import com.scratchcardexample.feature.scratchscreen.views.screen.ScratchScreenViewLandscape
 import com.scratchcardexample.feature.scratchscreen.views.screen.ScratchScreenViewPortrait
@@ -44,6 +45,7 @@ fun ScratchScreen(
 
     val baseImage = viewModel.scratchBaseImage.value
     val overlayImage = viewModel.scratchOverlayImage.value
+    val scratchCardState = viewModel.scratchCardState.collectAsStateWithLifecycle()
 
     if (baseImage != null && overlayImage != null)
         ScratchScreenView(
@@ -53,7 +55,7 @@ fun ScratchScreen(
             draggedPath = viewModel.draggedPath,
             movedOffset = viewModel.movedOffset,
             tracker = viewModel.tracker,
-            scratchCardState = viewModel.scratchCardState.value,
+            scratchCardState = scratchCardState.value,
             onScratchClick = viewModel::tryScratchTheCard,
         )
 }
