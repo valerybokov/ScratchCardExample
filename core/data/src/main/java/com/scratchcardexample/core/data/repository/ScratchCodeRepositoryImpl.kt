@@ -56,6 +56,9 @@ class ScratchCodeRepositoryImpl @Inject constructor(
     override fun readCode(): Flow<String?> = _code.asStateFlow()
 
     override suspend fun saveCode(code: String) {
+        if (code.isEmpty())
+            throw IllegalArgumentException("code is empty")
+
         //We save the code in RAM.
         // Even if we can't save it to a flash drive,
         // the user will still be able to use it.

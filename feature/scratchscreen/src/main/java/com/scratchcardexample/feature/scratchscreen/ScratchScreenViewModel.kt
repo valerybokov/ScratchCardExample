@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.scratchcardexample.core.domain.repository.ScratchCodeRepository
 import com.scratchcardexample.core.domain.usecases.GenerateCodeUseCase
+import com.scratchcardexample.feature.scratchscreen.views.scratchcard.BRUSH_RADIUS
 import com.scratchcardexample.feature.scratchscreen.views.scratchcard.model.ScratchCoverageTracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -49,7 +50,7 @@ class ScratchScreenViewModel @Inject constructor(
             tryScratchTheCard()
         }
     }
-    internal val tracker = ScratchCoverageTracker(brushRadius = 50f, onScratchedListener = listener)
+    internal val tracker = ScratchCoverageTracker(brushRadius = BRUSH_RADIUS, onScratchedListener = listener)
 
     private val _scratchCardState = MutableStateFlow(ScratchCardState.Initialising)
 

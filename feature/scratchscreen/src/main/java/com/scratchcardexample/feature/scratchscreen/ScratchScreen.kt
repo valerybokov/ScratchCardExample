@@ -23,6 +23,7 @@ import com.scratchcardexample.feature.scratchscreen.views.scratchcard.model.Drag
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.scratchcardexample.feature.scratchscreen.views.scratchcard.BRUSH_RADIUS
 import com.scratchcardexample.feature.scratchscreen.views.screen.LoadingAnimation
 import com.scratchcardexample.feature.scratchscreen.views.screen.ScratchScreenViewLandscape
 import com.scratchcardexample.feature.scratchscreen.views.screen.ScratchScreenViewPortrait
@@ -135,7 +136,7 @@ private fun ScratchScreenPreview(
         baseImage = base,
         onScratchClick = { },
         tracker = ScratchCoverageTracker(
-            brushRadius = 50f, onScratchedListener = listener
+            brushRadius = BRUSH_RADIUS, onScratchedListener = listener
         ),
         isCardScratched = scratchCardState == ScratchCardState.Scratched,
     )

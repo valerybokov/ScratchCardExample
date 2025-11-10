@@ -30,6 +30,8 @@ import com.scratchcardexample.feature.scratchscreen.R
 import androidx.compose.runtime.State
 import com.scratchcardexample.feature.scratchscreen.views.scratchcard.model.ScratchCoverageTracker
 
+const val BRUSH_RADIUS = 50f
+
 @Composable
 internal fun ScratchCard(
     modifier: Modifier = Modifier,
@@ -66,7 +68,7 @@ internal fun ScratchCard(
          else {
              clipOp = ClipOp.Intersect
              if (movedOffset.value != Offset.Unspecified) {
-                 draggedPath.value.path.addOval(oval = Rect(movedOffset.value, 50f))
+                 draggedPath.value.path.addOval(oval = Rect(movedOffset.value, BRUSH_RADIUS))
              }
          }
 
@@ -92,7 +94,7 @@ private fun ScratchCardPreview() {
         movedOffset = movedOffsetState,
         baseImage = base,
         tracker = ScratchCoverageTracker(
-            brushRadius = 50f, onScratchedListener = listener),
+            brushRadius = BRUSH_RADIUS, onScratchedListener = listener),
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
