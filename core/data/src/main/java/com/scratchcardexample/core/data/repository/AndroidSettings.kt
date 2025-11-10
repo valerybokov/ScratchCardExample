@@ -21,8 +21,6 @@ class AndroidSettings @Inject constructor(
 ): Settings {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-    override fun raw(): Flow<Preferences> = appContext.dataStore.data
-
     override suspend fun write(key: String, value: String) {
         appContext.dataStore.edit { prefs ->
             val prefsKey = stringPreferencesKey(key)

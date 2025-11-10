@@ -1,12 +1,9 @@
 package com.scratchcardexample.core.domain.repository
 
-import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.flow.Flow
 import androidx.datastore.core.IOException
 
 interface Settings {
-    fun raw(): Flow<Preferences>
-
     @Throws(IOException::class)
     fun readString(key: String, defaultValue: String): Flow<String>
 
