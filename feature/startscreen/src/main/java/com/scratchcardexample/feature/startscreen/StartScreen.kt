@@ -1,5 +1,6 @@
 package com.scratchcardexample.feature.startscreen
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -46,6 +48,7 @@ private fun StartScreenView(
     modifier: Modifier,
     onNavigateToScratchScreen: () -> Unit,
     onNavigateToActivationScreen: () -> Unit,
+    @StringRes
     scratchcardStateId: Int) {
     Column(
         modifier = modifier,
@@ -56,7 +59,8 @@ private fun StartScreenView(
 
         Text(
             text = stringResource(scratchcardStateId),
-            modifier = Modifier.padding(top = 16.dp, bottom = 32.dp)
+            modifier = Modifier.padding(top = 16.dp, bottom = 32.dp),
+            style = MaterialTheme.typography.titleMedium,
         )
 
         Button(onClick = onNavigateToScratchScreen,
