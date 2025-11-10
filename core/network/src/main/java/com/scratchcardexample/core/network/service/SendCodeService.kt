@@ -6,6 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface SendCodeService {
-    @GET("version")
+    @GET("version/{code}")
     suspend fun send(@Path("code") code: String): NetworkResponse<SendCodeResponse, Int>
 }
