@@ -24,8 +24,8 @@ object ApiModule {
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(10_000, TimeUnit.MINUTES)
-            .readTimeout(10_000, TimeUnit.MINUTES)
+            .connectTimeout(10_000, TimeUnit.MILLISECONDS)
+            .readTimeout(10_000, TimeUnit.MILLISECONDS)
 
         return okHttpClient.build()
     }
