@@ -2,7 +2,6 @@ package com.scratchcardexample.feature.scratchscreen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -42,11 +41,12 @@ fun ScratchScreen(
         viewModel.initialize(res)
     }
 
-    BackHandler(onBack = viewModel::cancelScratching)
-
     val baseImage = viewModel.scratchBaseImage.value
     val overlayImage = viewModel.scratchOverlayImage.value
     val scratchCardState = viewModel.scratchCardState.collectAsStateWithLifecycle()
+
+    // No BackHandler: back closes the screen, which clears the ViewModel
+    // and cancels an unfinished scratch in onCleared().
 
     if (baseImage != null && overlayImage != null)
         ScratchScreenView(
@@ -72,7 +72,8 @@ private fun ScratchScreenView(
     scratchCardState: ScratchCardState,
     onScratchClick: () -> Unit,
 ) {
-    if (scratchCardState != ScratchCardState.Scratching) {
+    if (scratchCardState != ScratchCardState.Scratching &&
+        scratchCardState != ScratchCardState.Initialising) {
         val configuration = LocalConfiguration.current
         if (configuration.orientation == ORIENTATION_PORTRAIT)
             ScratchScreenViewPortrait(

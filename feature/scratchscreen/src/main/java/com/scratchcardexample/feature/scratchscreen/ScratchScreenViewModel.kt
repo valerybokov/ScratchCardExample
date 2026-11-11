@@ -67,7 +67,7 @@ class ScratchScreenViewModel @Inject constructor(
 
         state
     }
-    .stateIn(viewModelScope, SharingStarted.Lazily, ScratchCardState.Scratching)
+    .stateIn(viewModelScope, SharingStarted.Lazily, ScratchCardState.Initialising)
 
     private var _loadImagesJob: Job? = null
 
@@ -104,9 +104,13 @@ class ScratchScreenViewModel @Inject constructor(
         }
     }
 
-    fun cancelScratching() {
+    /** Cancels an unfinished scratch, e.g. when the user closes the screen. */
+    private fun cancelScratching() {
         _scratchingJob?.cancel()
         _scratchingJob = null
+
+        if (_scratchCardState.value == ScratchCardState.Scratching)
+            _scratchCardState.value = ScratchCardState.NotScratched
     }
 
     override fun onCleared() {
