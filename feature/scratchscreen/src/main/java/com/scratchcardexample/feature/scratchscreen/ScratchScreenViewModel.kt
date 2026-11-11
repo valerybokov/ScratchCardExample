@@ -87,7 +87,7 @@ class ScratchScreenViewModel @Inject constructor(
                 tracker.reset()
                 _scratchCardState.value = ScratchCardState.Scratched
                 ensureActive()
-                repo.saveCode(code)//todo handle exceptions: cannot save the code
+                repo.saveCode(code)
             }
         }
     }

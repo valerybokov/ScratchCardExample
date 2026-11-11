@@ -49,7 +49,14 @@ class ScratchCodeRepositoryImpl @Inject constructor(
         if (_code.value != null) {
             _isActivated.value = true
 
-            settings.write(ID_CARD_ACTIVATED, 1)
+            // As with the code, the activation stays in RAM
+            // even if it can't be persisted.
+            try {
+                settings.write(ID_CARD_ACTIVATED, 1)
+            }
+            catch (x: IOException) {
+                //todo analytics
+            }
         }
     }
 
@@ -64,6 +71,11 @@ class ScratchCodeRepositoryImpl @Inject constructor(
         // the user will still be able to use it.
         _code.value = code
 
-        settings.write(ID_SCRATCH_CODE, code)
+        try {
+            settings.write(ID_SCRATCH_CODE, code)
+        }
+        catch (x: IOException) {
+            //todo analytics
+        }
     }
 }

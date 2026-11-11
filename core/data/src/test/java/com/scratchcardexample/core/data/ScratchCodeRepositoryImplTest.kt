@@ -45,6 +45,19 @@ class ScratchCodeRepositoryImplTest {
         assertEquals(expected, repo.readCode().first())
     }
 
+    @Test
+    fun testFailingStorageKeepsStateInMemory() = runTest {
+        val settings = FakeSettings().apply { failWrites = true }
+        val scope = CoroutineScope(Dispatchers.IO)
+        val repo = ScratchCodeRepositoryImpl(settings, scope)
+
+        repo.saveCode("1234")
+        repo.setCardAsActivated()
+
+        assertEquals("1234", repo.readCode().first())
+        assertTrue(repo.isCardActivated().first())
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun testEmptyCode() = runTest {
         val expected = ""

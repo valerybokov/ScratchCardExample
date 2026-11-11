@@ -3,10 +3,13 @@ package com.scratchcardexample.core.data.types
 import com.scratchcardexample.core.domain.repository.Settings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.io.IOException
 
 class FakeSettings: Settings {
     var valueInt = 0
     var valueString: String = ""
+    /** When true, every write fails as if the storage were unavailable. */
+    var failWrites = false
 
     override fun readString(
         key: String,
@@ -27,10 +30,12 @@ class FakeSettings: Settings {
     }
 
     override suspend fun write(key: String, value: String) {
+        if (failWrites) throw IOException("write failed")
         valueString = value
     }
 
     override suspend fun write(key: String, value: Int) {
+        if (failWrites) throw IOException("write failed")
         valueInt = value
     }
 }
