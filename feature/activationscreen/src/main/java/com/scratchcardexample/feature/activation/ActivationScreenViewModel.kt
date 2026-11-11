@@ -69,7 +69,7 @@ class ActivationScreenViewModel @Inject constructor(
     }
 }
 
-interface ActivationState {
+sealed interface ActivationState {
     object Default: ActivationState
     object ReadingTheCode: ActivationState
     class Success(val code: Int): ActivationState
