@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -43,16 +44,28 @@ internal fun ScratchCard(
     tracker: ScratchCoverageTracker,
     isCardScratched: Boolean = false,
 ) {
+    // The pointerInput block is started once, so read the latest value through State.
+    val isScratched = rememberUpdatedState(isCardScratched)
+
      Canvas(
          modifier = modifier
              .size(widthHeight)
              .pointerInput(true) {
                  detectDragGestures { change, _ ->
-                     movedOffset.value = change.position
-                     tracker.registerTouch(change.position, size)
+                     val position = change.position
+                     // Grow the path once per new touch position, not on every redraw.
+                     if (!isScratched.value && position != movedOffset.value) {
+                         draggedPath.value.path.addOval(oval = Rect(position, BRUSH_RADIUS))
+                     }
+                     // Updating the offset also invalidates the Canvas so the new path is drawn.
+                     movedOffset.value = position
+                     tracker.registerTouch(position, size)
                  }
              },
      ) {
+         // Read the offset so the Canvas redraws whenever the path grows.
+         movedOffset.value
+
          val imageWidth = size.width.coerceAtMost(size.height).toInt()
          val imageSize = IntSize(
              width = imageWidth,
@@ -61,16 +74,7 @@ internal fun ScratchCard(
 
          drawImage(image = overlayImage, dstSize = imageSize)
 
-         val clipOp: ClipOp
-         if (isCardScratched) {
-             clipOp = ClipOp.Difference
-         }
-         else {
-             clipOp = ClipOp.Intersect
-             if (movedOffset.value != Offset.Unspecified) {
-                 draggedPath.value.path.addOval(oval = Rect(movedOffset.value, BRUSH_RADIUS))
-             }
-         }
+         val clipOp = if (isCardScratched) ClipOp.Difference else ClipOp.Intersect
 
          clipPath(path = draggedPath.value.path, clipOp = clipOp) {
              drawImage(baseImage, dstSize = imageSize)
