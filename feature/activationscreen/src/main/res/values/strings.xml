@@ -8,7 +8,7 @@
     <string name="title_activation">Activation</string>
     <string name="activation_error">Can not activate the card</string>
     <string name="error_no_code">There is no code to activate</string>
-    <string name="error_api">Something vent wrong</string>
+    <string name="error_api">Something went wrong</string>
     <string name="error_no_internet">No Internet</string>
     <string name="error_unknown">Unknown error</string>
     <string name="error_number_is_small">Received number is too small</string>
