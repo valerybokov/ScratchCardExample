@@ -19,7 +19,9 @@ import com.scratchcardexample.core.domain.usecases.GenerateCodeUseCase
 import com.scratchcardexample.feature.scratchscreen.views.scratchcard.BRUSH_RADIUS
 import com.scratchcardexample.feature.scratchscreen.views.scratchcard.model.ScratchCoverageTracker
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -67,10 +69,20 @@ class ScratchScreenViewModel @Inject constructor(
     }
     .stateIn(viewModelScope, SharingStarted.Lazily, ScratchCardState.Scratching)
 
+    private var _loadImagesJob: Job? = null
+
     fun initialize(res: Resources) {
-        if (_scratchOverlayImage.value == null) {
-            _scratchOverlayImage.value = ImageBitmap.imageResource(res, R.drawable.overlay)
-            _scratchBaseImage.value = ImageBitmap.imageResource(res, R.drawable.base)
+        if (_scratchOverlayImage.value != null || _loadImagesJob != null)
+            return
+
+        _loadImagesJob = viewModelScope.launch {
+            // Decoding bitmaps is CPU heavy, keep it off the main thread.
+            val (overlay, base) = withContext(Dispatchers.Default) {
+                ImageBitmap.imageResource(res, R.drawable.overlay) to
+                    ImageBitmap.imageResource(res, R.drawable.base)
+            }
+            _scratchOverlayImage.value = overlay
+            _scratchBaseImage.value = base
         }
     }
 
