@@ -12,7 +12,7 @@ class ReadCodeUseCaseTest {
         val repo = FakeScratchCodeRepository(null)
         val result = ReadCodeUseCase(repo)()
 
-        assertEquals(result, null)
+        assertEquals(null, result)
     }
 
     @Test
@@ -21,7 +21,7 @@ class ReadCodeUseCaseTest {
         val repo = FakeScratchCodeRepository(expected)
         val result = ReadCodeUseCase(repo)()
 
-        assertEquals(result, expected)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -30,6 +30,6 @@ class ReadCodeUseCaseTest {
         val repo = FakeScratchCodeRepository(expected)
         val result = ReadCodeUseCase(repo)()
 
-        assertEquals(result, expected)
+        assertEquals(expected, result)
     }
 }

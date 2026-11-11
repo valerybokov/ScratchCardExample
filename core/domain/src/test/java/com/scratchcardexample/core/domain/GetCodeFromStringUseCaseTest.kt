@@ -14,7 +14,7 @@ class GetCodeFromStringUseCaseTest {
     fun invalid_format_1() {
         val result = GetCodeFromStringUseCase()(null, 123)
 
-        assertEquals(result, CodeFromStringResult.InvalidFormat)
+        assertEquals(CodeFromStringResult.InvalidFormat, result)
     }
 
 
@@ -22,14 +22,14 @@ class GetCodeFromStringUseCaseTest {
     fun invalid_format_2() {
         val result = GetCodeFromStringUseCase()("", 123)
 
-        assertEquals(result, CodeFromStringResult.InvalidFormat)
+        assertEquals(CodeFromStringResult.InvalidFormat, result)
     }
 
     @Test
     fun invalid_format_3() {
         val result = GetCodeFromStringUseCase()("fgdgd", 123)
 
-        assertEquals(result, CodeFromStringResult.InvalidFormat)
+        assertEquals(CodeFromStringResult.InvalidFormat, result)
     }
 
     @Test
@@ -39,13 +39,13 @@ class GetCodeFromStringUseCaseTest {
         assertTrue(result is CodeFromStringResult.Success)
 
         val code = (result as CodeFromStringResult.Success).value
-        assertEquals(code, 123)
+        assertEquals(123, code)
     }
 
     @Test
     fun valid_format_too_small() {
         val result = GetCodeFromStringUseCase()("123", 123)
 
-        assertEquals(result, CodeFromStringResult.TooSmall)
+        assertEquals(CodeFromStringResult.TooSmall, result)
     }
 }

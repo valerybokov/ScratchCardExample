@@ -22,7 +22,7 @@ class ScratchCodeRepositoryImplTest {
         val repo = ScratchCodeRepositoryImpl(settings, scope)
 
         assertFalse(repo.isCardActivated().first())
-        assertEquals(repo.readCode().first(), null)
+        assertEquals(null, repo.readCode().first())
 
         repo.setCardAsActivated()
         assertFalse(repo.isCardActivated().first())
@@ -30,7 +30,7 @@ class ScratchCodeRepositoryImplTest {
         repo.saveCode("1234")
         repo.setCardAsActivated()
         val isActivated = repo.isCardActivated().first()
-        assertEquals("isActivated " + isActivated, isActivated, true)
+        assertEquals("isActivated " + isActivated, true, isActivated)
     }
 
     @Test
@@ -42,7 +42,7 @@ class ScratchCodeRepositoryImplTest {
 
         repo.saveCode(expected)
 
-        assertEquals(repo.readCode().first(), expected)
+        assertEquals(expected, repo.readCode().first())
     }
 
     @Test(expected = IllegalArgumentException::class)

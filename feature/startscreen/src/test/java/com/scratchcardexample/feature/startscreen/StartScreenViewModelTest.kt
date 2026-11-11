@@ -15,7 +15,7 @@ class StartScreenViewModelTest {
         val repo = FakeScratchCodeRepository(null)
         val vm = StartScreenViewModel(repo)
 
-        assertEquals(vm.scratchcardStateId.value, R.string.card_not_scratched)
+        assertEquals(R.string.card_not_scratched, vm.scratchcardStateId.value)
     }
 
     @Test
@@ -23,6 +23,6 @@ class StartScreenViewModelTest {
         val repo = FakeScratchCodeRepository("2324")
         val vm = StartScreenViewModel(repo)
 
-        assertEquals(vm.scratchcardStateId.value, R.string.card_not_scratched)
+        assertEquals(R.string.card_not_scratched, vm.scratchcardStateId.value)
     }
 }

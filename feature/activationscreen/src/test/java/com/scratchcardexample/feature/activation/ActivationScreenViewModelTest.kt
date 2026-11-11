@@ -32,6 +32,6 @@ class ActivationScreenViewModelTest {
             getCodeFromStringUseCase
         )
 
-        assertEquals(viewModel.state.value, ActivationState.Default)
+        assertEquals(ActivationState.Default, viewModel.state.value)
     }
 }

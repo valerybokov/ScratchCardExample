@@ -14,18 +14,18 @@ class MainActivityViewModelTest {
         val viewModel = MainActivityViewModel()
         viewModel.updateHeader(ROUTE_SCRATCH)
         assertEquals(
-            viewModel.header.value,
-            com.scratchcardexample.feature.scratchscreen.R.string.scratch)
+            com.scratchcardexample.feature.scratchscreen.R.string.scratch,
+            viewModel.header.value)
 
         viewModel.updateHeader(ROUTE_START)
         assertEquals(
-            viewModel.header.value,
-            R.string.app_name)
+            R.string.app_name,
+            viewModel.header.value)
 
         viewModel.updateHeader(ROUTE_ACTIVATION)
         assertEquals(
-            viewModel.header.value,
-            com.scratchcardexample.feature.activation.R.string.title_activation)
+            com.scratchcardexample.feature.activation.R.string.title_activation,
+            viewModel.header.value)
     }
 
     @Test
