@@ -46,18 +46,12 @@ internal class NetworkResponseCall<T_Body : Any, T_Error : Any>(
                             null
                         }
                     }
-                    if (errorBody != null) {
-                        val code = response.code()
-                        callback.onResponse(
-                            this@NetworkResponseCall,
-                            Response.success(NetworkResponse.ApiError(errorBody, code))
-                        )
-                    } else {
-                        callback.onResponse(
-                            this@NetworkResponseCall,
-                            Response.success(NetworkResponse.UnknownError(null))
-                        )
-                    }
+                    // The server did answer, so this is an API error even when
+                    // the error body is missing or in an unexpected format.
+                    callback.onResponse(
+                        this@NetworkResponseCall,
+                        Response.success(NetworkResponse.ApiError(errorBody, response.code()))
+                    )
                 }
             }
 

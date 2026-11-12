@@ -11,10 +11,11 @@ sealed interface NetworkResponse<out T_Body : Any, out T_Error : Any> {
         override val isSuccess: Boolean = true) : NetworkResponse<T_Body, Nothing>
 
     /**
-     * Failure response with body
+     * Non-2xx HTTP response. [body] is null when the error body
+     * is empty or can't be converted to T_Error.
      */
     data class ApiError<T_Error : Any>(
-        val body: T_Error,
+        val body: T_Error?,
         val code: Int,
         override val isSuccess: Boolean = false) : NetworkResponse<Nothing, T_Error>
 
