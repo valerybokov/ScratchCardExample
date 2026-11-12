@@ -7,12 +7,14 @@ import kotlinx.coroutines.flow.flow
 class FakeScratchCodeRepository(
     private val code: String?): ScratchCodeRepository {
 
-    override fun isCardActivated(): Flow<Boolean> {
-        TODO("Not yet implemented")
-    }
+    var isActivated = false
+        private set
+
+    override fun isCardActivated(): Flow<Boolean> =
+        flow { emit(isActivated) }
 
     override suspend fun setCardAsActivated() {
-        TODO("Not yet implemented")
+        isActivated = true
     }
 
     override fun readCode(): Flow<String?> =

@@ -11,6 +11,8 @@ import com.scratchcardexample.core.domain.usecases.ReadCodeUseCase
 import com.scratchcardexample.core.domain.usecases.SendCodeResult
 import com.scratchcardexample.core.domain.usecases.SendCodeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,6 +22,7 @@ class ActivationScreenViewModel @Inject constructor(
     private val readCode: ReadCodeUseCase,
     private val repo: ScratchCodeRepository,
     private val getCodeFromString: GetCodeFromStringUseCase,
+    private val appScope: CoroutineScope,
 ): ViewModel() {
     private val _state = mutableStateOf<ActivationState>(ActivationState.Default)
 
@@ -35,24 +38,27 @@ class ActivationScreenViewModel @Inject constructor(
 
         _state.value = ActivationState.ReadingTheCode
 
-        viewModelScope.launch {
-            val code: String? = readCode()
+        // The activation must not be cancelled when the user closes the screen,
+        // so it runs in the app-wide scope. The screen only waits for the result:
+        // leaving it cancels the waiting, not the activation itself.
+        val activation = appScope.async { runActivation() }
 
-            if (code.isNullOrEmpty())
-                _state.value = ActivationState.Error(R.string.error_no_code)
-            else {
-                val sendCodeResult = sendCode(code)
-                when(sendCodeResult) {
-                    is SendCodeResult.Success ->
-                        _state.value = getCodeFromString(sendCodeResult.value)
-                    is SendCodeResult.ApiError ->
-                        _state.value = ActivationState.Error(R.string.error_api)
-                    SendCodeResult.NetworkError ->
-                        _state.value = ActivationState.Error(R.string.error_no_internet)
-                    is SendCodeResult.UnknownError ->
-                        _state.value = ActivationState.Error(R.string.error_unknown)
-                }
-            }
+        viewModelScope.launch {
+            _state.value = activation.await()
+        }
+    }
+
+    private suspend fun runActivation(): ActivationState {
+        val code: String? = readCode()
+
+        if (code.isNullOrEmpty())
+            return ActivationState.Error(R.string.error_no_code)
+
+        return when (val sendCodeResult = sendCode(code)) {
+            is SendCodeResult.Success -> getCodeFromString(sendCodeResult.value)
+            is SendCodeResult.ApiError -> ActivationState.Error(R.string.error_api)
+            SendCodeResult.NetworkError -> ActivationState.Error(R.string.error_no_internet)
+            is SendCodeResult.UnknownError -> ActivationState.Error(R.string.error_unknown)
         }
     }
 
