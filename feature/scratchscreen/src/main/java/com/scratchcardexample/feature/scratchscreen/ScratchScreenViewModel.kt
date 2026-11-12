@@ -56,10 +56,11 @@ class ScratchScreenViewModel @Inject constructor(
 
     private val _scratchCardState = MutableStateFlow(ScratchCardState.Initialising)
 
-    val scratchCardState: StateFlow<ScratchCardState> = combine(repo.isCardActivated(), _scratchCardState) { isCardActivated, scratchCardState ->
+    // A card counts as scratched once its code is saved, whether or not it's activated yet.
+    val scratchCardState: StateFlow<ScratchCardState> = combine(repo.readCode(), _scratchCardState) { code, scratchCardState ->
         val state: ScratchCardState
         if (scratchCardState == ScratchCardState.Initialising) {
-            state = if (isCardActivated) ScratchCardState.Scratched else ScratchCardState.NotScratched
+            state = if (code.isNullOrEmpty()) ScratchCardState.NotScratched else ScratchCardState.Scratched
             _scratchCardState.value = state
         }
         else

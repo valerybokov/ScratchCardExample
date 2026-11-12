@@ -46,6 +46,20 @@ class ScratchCodeRepositoryImplTest {
     }
 
     @Test
+    fun testStoredValuesAreSeenRightAfterCreation() = runTest {
+        val settings = FakeSettings().apply {
+            valueString = "1234"
+            valueInt = 1
+        }
+        val scope = CoroutineScope(Dispatchers.IO)
+        val repo = ScratchCodeRepositoryImpl(settings, scope)
+
+        // Readers must wait for the stored values instead of returning the empty defaults.
+        assertEquals("1234", repo.readCode().first())
+        assertTrue(repo.isCardActivated().first())
+    }
+
+    @Test
     fun testFailingStorageKeepsStateInMemory() = runTest {
         val settings = FakeSettings().apply { failWrites = true }
         val scope = CoroutineScope(Dispatchers.IO)

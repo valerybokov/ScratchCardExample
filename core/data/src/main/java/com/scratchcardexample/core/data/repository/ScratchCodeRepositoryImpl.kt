@@ -3,15 +3,17 @@ package com.scratchcardexample.core.data.repository
 import androidx.datastore.core.IOException
 import com.scratchcardexample.core.domain.repository.ScratchCodeRepository
 import com.scratchcardexample.core.domain.repository.Settings
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 private const val ID_SCRATCH_CODE = "ID_SCRATCH_CODE"
@@ -25,24 +27,37 @@ class ScratchCodeRepositoryImpl @Inject constructor(
     private val _code = MutableStateFlow(null as String?)
     private val _isActivated = MutableStateFlow(false)
 
+    /** Completes once the stored values have been read (or failed to be read). */
+    private val loaded = CompletableDeferred<Unit>()
+
     init {
         scope.launch(Dispatchers.IO) {
             try {
                 val code = settings.readString(ID_SCRATCH_CODE, "").first()
 
+                // Don't overwrite a code saved while we were loading.
                 if (code.isNotEmpty())
-                    _code.value = code
+                    _code.compareAndSet(null, code)
 
-                _isActivated.value = settings.readIntSuspend(ID_CARD_ACTIVATED, 0) == 1
+                if (settings.readIntSuspend(ID_CARD_ACTIVATED, 0) == 1)
+                    _isActivated.value = true
             }
             catch (x: IOException) {
                 //todo analytics
             }
+            finally {
+                loaded.complete(Unit)
+            }
         }
     }
 
-    override fun isCardActivated(): Flow<Boolean> = _isActivated.map {
-        it && !_code.value.isNullOrEmpty()
+    // Readers wait for the stored values, so nobody sees the empty
+    // defaults and mistakes them for "card not scratched".
+    override fun isCardActivated(): Flow<Boolean> = flow {
+        loaded.await()
+        emitAll(combine(_isActivated, _code) { isActivated, code ->
+            isActivated && !code.isNullOrEmpty()
+        })
     }
 
     override suspend fun setCardAsActivated() {
@@ -60,7 +75,10 @@ class ScratchCodeRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun readCode(): Flow<String?> = _code.asStateFlow()
+    override fun readCode(): Flow<String?> = flow {
+        loaded.await()
+        emitAll(_code)
+    }
 
     override suspend fun saveCode(code: String) {
         if (code.isEmpty())
