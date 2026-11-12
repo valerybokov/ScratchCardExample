@@ -23,6 +23,3 @@ TODO
 
 [] better errors handling
 
-[] images loading speed
-
-[] better readme
