@@ -20,7 +20,7 @@ class SendCodeUseCase @Inject constructor(
             is NetworkResponse.Success<*> -> {
                 val body = (response as NetworkResponse.Success<SendCodeResponse>).body
 
-                return SendCodeResult.Success(body.android)
+                SendCodeResult.Success(body.android)
             }
             is NetworkResponse.NetworkError -> SendCodeResult.NetworkError
             is NetworkResponse.ApiError<*> -> SendCodeResult.ApiError(response.code)
